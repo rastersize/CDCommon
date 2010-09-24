@@ -3,14 +3,14 @@
 //  Arizona
 //
 //  Created by Aron Cedercrantz on 31/03/10.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009-2010 Aron Cedercrantz. All rights reserved.
 //
 
 #ifndef CD_COMMON_H
 #define CD_COMMON_H
 #ifdef __OBJC__
 
-#define CD_APP_CREATOR				@"Cedercrantz"
+#define CD_APP_CREATOR				@"__MyCompanyName__"
 
 
 #pragma mark Bundle information
@@ -62,6 +62,17 @@
 #define CDNonatomicRetainedSetToFrom(a, b) do{if(a!=b){[a release];a=[b retain];}}while(0)
 #define CDNonatomicCopySetToFrom(a, b) do{if(a!=b){[a release];a=[b copy];}}while(0)
 
+
+// Release Objective-C object macro (will release and then set the variable to
+// nil if not in debug mode, otherwise it will just release variable).
+// From http://iphonedevelopment.blogspot.com/2010/09/dealloc.html
+#if DEBUG
+	#define CDRelease(x) [x release]
+#else
+	#define CDRelease(x) [x release], x = nil
+#endif
+
+
 #pragma mark Debug outout
 // Define our own version of NSLog(...) which will only send its input to the
 // output if we are in debug mode and a assertion logger which will cause an
@@ -79,6 +90,7 @@
 #endif // DEBUG
 // Assertion method which use ALog(...) to print its output
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
+
 
 #pragma mark -description method formats
 // 1:    %@ == The object name

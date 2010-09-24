@@ -3,7 +3,7 @@
 //  Arizona
 //
 //  Created by Aron Cedercrantz on 01/04/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Aron Cedercrantz. All rights reserved.
 //
 
 #import "CDCommon.h"
