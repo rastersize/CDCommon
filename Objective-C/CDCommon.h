@@ -10,12 +10,12 @@
 #define CD_COMMON_H
 #ifdef __OBJC__
 
-#define CD_APP_CREATOR				@"__MyCompanyName__"
-
 
 #pragma mark Bundle information
 // Bundle information
 #define CD_BUNDLE_IDENTIFIER		[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleIdentifier"]
+// Add the key "CDBundleCreatorName" to your bundle plist for this to work.
+#define CD_APP_CREATOR				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CDBundleCreatorName"]
 #define CD_APP_NAME					[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleName"]
 #define CD_APP_VERSION				[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]
 #define CD_APP_VERSION_REV			[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]
@@ -49,13 +49,13 @@
 // Atomic accessor (retain, copy and return) macros for non-atomic data types.
 // From http://cocoawithlove.com/2009/10/memory-and-thread-safe-custom-property.html
 #define CDAtomicRetainedSetToFrom(dest, source) \
-	objc_setProperty(self, _cmd, (ptrdiff_t)(&dest) - (ptrdiff_t)(self), source, YES, NO)
+objc_setProperty(self, _cmd, (ptrdiff_t)(&dest) - (ptrdiff_t)(self), source, YES, NO)
 #define CDAtomicCopiedSetToFrom(dest, source) \
-	objc_setProperty(self, _cmd, (ptrdiff_t)(&dest) - (ptrdiff_t)(self), source, YES, YES)
+objc_setProperty(self, _cmd, (ptrdiff_t)(&dest) - (ptrdiff_t)(self), source, YES, YES)
 #define CDAtomicAutoreleasedGet(source) \
-	objc_getProperty(self, _cmd, (ptrdiff_t)(&source) - (ptrdiff_t)(self), YES)
+objc_getProperty(self, _cmd, (ptrdiff_t)(&source) - (ptrdiff_t)(self), YES)
 #define CDAtomicStructToFrom(dest, source) \
-	objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
+objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 
 // Non-atomic accessor (retain, copy and return) macros for non-atomic data types.
 // From http://cocoawithlove.com/2009/10/memory-and-thread-safe-custom-property.html
@@ -67,9 +67,9 @@
 // nil if not in debug mode, otherwise it will just release variable).
 // From http://iphonedevelopment.blogspot.com/2010/09/dealloc.html
 #if DEBUG
-	#define CDRelease(x) [x release]
+#define CDRelease(x) [x release]
 #else
-	#define CDRelease(x) [x release], x = nil
+#define CDRelease(x) [x release], x = nil
 #endif
 
 
@@ -79,14 +79,14 @@
 // assertion if we are in debug mode and a in non-debug mode it will output the
 // assertion via NSLog(...)
 #ifdef DEBUG
-	#define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
-	#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+#define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
 #else // !DEBUG
-	#define DLog(...) do { } while (0)
-	#ifndef NS_BLOCK_ASSERTIONS
-		#define NS_BLOCK_ASSERTIONS
-	#endif
-	#define ALog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#define DLog(...) do { } while (0)
+#ifndef NS_BLOCK_ASSERTIONS
+#define NS_BLOCK_ASSERTIONS
+#endif
+#define ALog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
 #endif // DEBUG
 // Assertion method which use ALog(...) to print its output
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
