@@ -1,0 +1,85 @@
+\documentclass[a4paper,swedish]{report}
+\usepackage[utf8x]{inputenc}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{fancyhdr}
+%\usepackage{cite}
+\usepackage{appendix}
+\usepackage{url}
+\usepackage{natbib}          % Harvard bibliography references.
+\usepackage[nodayofweek, ddmmyyyy]{datetime}
+\usepackage{titlesec}
+%\usepackage{mathptmx}  % Uncomment this and the two following lines for Times New Roman font
+%\usepackage[LY1]{fontenc}
+%\usepackage{timesnewx}
+%\usepackage{times}
+
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+
+% ISO Date (Like "2010-04-16")
+\renewcommand{\dateseparator}{-}
+\newcommand{\todayiso}{\the\year \dateseparator \twodigit\month \dateseparator \twodigit\day}
+
+% Make sure the chapter headers are of the format "<no>   <name>"
+\titleformat{\chapter}[hang]{\bf\huge}{\thechapter}{2pc}{}
+
+% Change the hard brackets "[ ]" of the cite style to soft "( )".
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+% We allow loading of the following image formats.
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.tif,.tiff}
+
+% See to that some commands generate swedish text swedish
+\renewcommand{\contentsname}{Innehållsförteckning}
+\renewcommand{\chaptername}{Kapitel}
+\renewcommand{\abstractname}{Sammandrag}
+\renewcommand{\appendixname}{Bilaga}
+\renewcommand{\appendixpagename}{Bilagor}
+\renewcommand{\bibname}{Källhänvisningar}
+
+% Document title-page
+\title{
+	\Huge{
+		The title of the document
+	}
+}
+
+\author{
+	Author Name \\
+	\\
+	\normalsize{Institute/organization} \\
+	\normalsize{Department}
+}
+
+%% Begin the document
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\begin{abstract}
+%\input{abstract}
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%% Chapters
+
+
+%% Bibliography
+\bibliographystyle{agsm}
+\bibliography{sources}
+
+%% Appendices
+\appendix
+
+\end{document}
