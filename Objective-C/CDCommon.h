@@ -1,6 +1,5 @@
 //
-//  Common.h
-//  Arizona
+//  CDCommon.h
 //
 //  Created by Aron Cedercrantz on 31/03/10.
 //  Copyright 2009-2010 Aron Cedercrantz. All rights reserved.
