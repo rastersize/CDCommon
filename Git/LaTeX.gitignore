@@ -4,3 +4,6 @@
 *.toc
 *.bbl
 *.blg
+*.aux
+*.synctex.gz
+*.synctex.gz*
