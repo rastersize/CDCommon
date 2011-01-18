@@ -2,7 +2,7 @@
 //  CDCommon.h
 //
 //  Created by Aron Cedercrantz on 31/03/10.
-//  Copyright 2009-2010 Aron Cedercrantz. All rights reserved.
+//  Copyright 2009-2011 Aron Cedercrantz. All rights reserved.
 //
 
 #ifndef CD_COMMON_H
@@ -23,12 +23,23 @@
 
 #pragma mark Misc application macros
 // Application delegate
-#define CD_APP_DELEGATE				[[NSApplication sharedApplication] delegate]
+#if TARGET_OS_IPHONE
+	#define CD_APP_DELEGATE			[[UIApplication sharedApplication] delegate]
+// OS X
+#else
+	#define CD_APP_DELEGATE			[[NSApplication sharedApplication] delegate]
+#endif // TARGET_OS_IPHONE
 
 
-#pragma mark Misc workspace macros
+#pragma mark Open URL macros
 // Open an URL
-#define CD_OPEN_URL(urlString)		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlString]]
+#if TARGET_OS_IPHONE
+	#define CD_OPEN_URL(url)		[[UIApplication sharedApplication] openURL:url]
+// OS X
+#else
+	#define CD_OPEN_URL(url)		[[NSWorkspace sharedWorkspace] openURL:url]
+#endif // TARGET_OS_IPHONE
+#define CD_OPEN_URL_STR(urlStr)		CD_OPEN_URL([NSURL URLWithString:urlStr])
 
 
 #pragma mark Preferences
@@ -66,9 +77,9 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // nil if not in debug mode, otherwise it will just release variable).
 // From http://iphonedevelopment.blogspot.com/2010/09/dealloc.html
 #if DEBUG
-#define CDRelease(x) [x release]
+	#define CDRelease(x)			[x release]
 #else
-#define CDRelease(x) [x release], x = nil
+	#define CDRelease(x)			[x release], x = nil
 #endif
 
 
@@ -78,14 +89,14 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // assertion if we are in debug mode and a in non-debug mode it will output the
 // assertion via NSLog(...)
 #ifdef DEBUG
-#define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
-#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+	#define DLog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+	#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
 #else // !DEBUG
-#define DLog(...) do { } while (0)
-#ifndef NS_BLOCK_ASSERTIONS
-#define NS_BLOCK_ASSERTIONS
-#endif
-#define ALog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+	#define DLog(...) do { } while (0)
+	#ifndef NS_BLOCK_ASSERTIONS
+		#define NS_BLOCK_ASSERTIONS
+	#endif
+	#define ALog(...) NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
 #endif // DEBUG
 // Assertion method which use ALog(...) to print its output
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
