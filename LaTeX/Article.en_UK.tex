@@ -1,0 +1,75 @@
+\ifx\pdfoutput\undefined % If you are running latex then:
+\documentclass[11pt,a4paper]{article}
+% put here packages only for the DVI:
+\usepackage[dvips]{graphicx}
+ 
+\else % else, you are running pdflatex:
+\documentclass[pdftex,11pt,a4paper]{article}
+% put here packages only for the PDF:
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\usepackage[breaklinks,pdfpagelabels=false]{hyperref}
+ 
+\fi
+
+% Generic packages
+\usepackage{Article-English}
+
+\newcommand{\articletitle}{The title of the article}
+
+% Title page
+\title{\Huge{\articletitle}}
+\author{
+	Author Name \\
+	\normalsize{Department} \\
+	\normalsize{Organization}
+}
+\date{\normalsize{\todayiso}}
+
+
+%% Header and footer
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+
+\renewcommand{\headrulewidth}{0.1pt}
+
+\fancyhead[L]{\articletitle}
+\fancyhead[R]{Author Name}
+\fancyfoot[C]{\thepage}
+
+
+\begin{document}
+
+% Title page
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+
+% Table of Contents
+%\tableofcontents
+%\newpage
+
+
+% Content Innehåll
+\setcounter{page}{1}
+\section{Test}
+Foo
+
+%\input{Section-1.tex}
+%\input{Section-2.tex}
+%\input{Section-3.tex}
+
+% Referenser
+%\clearpage
+%\addcontentsline{toc}{chapter}{References}
+%\bibliographystyle{agsm}
+%\bibliography{References}
+
+
+% Bilagor
+%\appendix
+%\input{Appendices.tex}
+
+\end{document}

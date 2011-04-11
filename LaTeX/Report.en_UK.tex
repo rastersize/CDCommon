@@ -1,10 +1,10 @@
 \ifx\pdfoutput\undefined % If you are running latex then:
-\documentclass[11pt,a4paper,swedish]{report}
+\documentclass[11pt,a4paper]{report}
 % put here packages only for the DVI:
 \usepackage[dvips]{graphicx}
  
 \else % else, you are running pdflatex:
-\documentclass[pdftex,11pt,a4paper,swedish]{report}
+\documentclass[pdftex,11pt,a4paper]{report}
 % put here packages only for the PDF:
 \usepackage[pdftex]{graphicx}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
@@ -13,7 +13,7 @@
 \fi
 
 % Generic packages
-\usepackage{Report-Swedish}
+\usepackage{Report-English}
 
 % Settings
 \input{./Report/Settings.tex}
@@ -33,12 +33,6 @@
 % Abstract
 \begin{abstract}
 \input{./Report/Abstract.tex}
-\end{abstract}
-
-% Swedish abstract
-\renewcommand{\abstractname}{Sammandrag}
-\begin{abstract}
-\input{./Report/Abstract-Swedish.tex}
 \end{abstract}
 
 % Preface
@@ -64,10 +58,9 @@
 \pagenumbering{arabic}	
 \setcounter{page}{1}
 
-\input{./Report/Introduction.tex}
-\input{./Report/Theory.tex}
-\input{./Report/Results.tex}
-\input{./Report/Discussion.tex}
+\input{./Main/Inledning.tex}
+\input{./Main/Huvuddel.tex}
+\input{./Main/Slutsatser.tex}
 
 % References
 \clearpage
