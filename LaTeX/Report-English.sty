@@ -1,0 +1,65 @@
+\ProvidesPackage{Report-English}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}				% See geometry.pdf to learn the layout options. There are lots.
+\usepackage[parfill]{parskip}		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{units}
+\usepackage{listings}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{natbib}					% Harvard bibliography references.
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{fancyhdr}
+\usepackage{fncychap}
+\usepackage{appendix}
+\usepackage{url}
+\usepackage[nodayofweek, ddmmyyyy]{datetime}
+\usepackage{titlesec}
+\usepackage{mdwlist}
+\usepackage{microtype}
+\usepackage{lettrine}
+\usepackage{eso-pic}
+\usepackage{pdfpages}
+
+% ISO Date (Like "2010-04-16")
+\renewcommand{\dateseparator}{-}
+\newcommand{\todayiso}{\the\year \dateseparator \twodigit\month \dateseparator \twodigit\day}
+
+% Make sure the chapter headers are of the format "<no>   <name>"
+\titleformat{\chapter}[hang]{\bf\Huge}{\thechapter}{2pc}{}
+\titlespacing{\chapter}{0pt}{-1.5cm}{1.25cm}
+
+% Change the hard brackets "[ ]" of the cite style to soft "( )" (Harvard/
+% Chalmers standard style).
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+% Make the date on the frontpage normal font size  and ISO style.
+\date{\normalsize{\todayiso}}
+
+% Fancyheader shortcuts
+\newcommand{\setdefaulthdr}{%
+	\fancyhead[L]{\slshape \rightmark}%
+	\fancyhead[R]{\slshape \leftmark}%
+	\fancyfoot[C]{\thepage}%
+}
+\newcommand{\setspecialhdr}{%
+	\fancyhead[L]{ }%
+	\fancyhead[R]{\slshape \leftmark}%
+	\fancyfoot[C]{\thepage}%
+}
+
+% Background picture
+\newcommand{\backgroundpic}[3]{%
+	\put(#1,#2){
+		\parbox[b][\paperheight]{\paperwidth}{%
+			\centering
+			\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{#3}
+			\vfill
+}}}
+

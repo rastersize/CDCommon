@@ -1,0 +1,34 @@
+% Metadata
+\newcommand{\thesisauthors}{First Author, Second Author \& Third Author}
+
+\newcommand{\thesistitle}{Name of The Great Thesis}
+\newcommand{\thesissubtitle}{Sub-title of the great thesis}
+
+\newcommand{\thesistype}{Type of Thesis}
+\newcommand{\thesisprogramme}{Programme at The Department}
+\newcommand{\thesisdepartment}{Department}
+\newcommand{\thesisorganization}{Organization}
+\newcommand{\thesislocationcountry}{Country}
+\newcommand{\thesislocationcity}{City}
+\newcommand{\thesislocationpostalcode}{SE-123 45}
+
+\newcommand{\thesiscopyrightyear}{2011}
+\newcommand{\thesiscopyrightmonth}{may}
+
+% PDF metadata and link style
+\hypersetup{
+	pdftitle={\thesistype: \thesistitle: \thesissubtitle},%
+	pdfauthor={\thesisauthors},%
+	pdfcreator={},
+    colorlinks=true,%
+    citecolor=black,%
+    filecolor=black,%
+    linkcolor=black,%
+    urlcolor=black
+}
+
+\renewcommand{\LettrineFontHook}{\color[gray]{0.3}}
+
+% Fancyheader (see packagescommands.tex for default/special)
+\pagestyle{fancy}
+\setdefaulthdr

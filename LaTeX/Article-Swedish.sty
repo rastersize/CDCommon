@@ -1,0 +1,47 @@
+\ProvidesPackage{Article-Swedish}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}							% See geometry.pdf to learn the layout options. There are lots.
+\usepackage[parfill]{parskip}					% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{fancyhdr}
+\usepackage{appendix}
+\usepackage{url}
+\usepackage{natbib}								% Harvard bibliography references.
+\usepackage[nodayofweek, ddmmyyyy]{datetime}
+\usepackage{titlesec}
+\usepackage{mdwlist}
+\usepackage{microtype}
+\usepackage[normalem]{ulem}
+
+% ISO Date (Like "2010-04-16")
+\renewcommand{\dateseparator}{-}
+\newcommand{\todayiso}{\the\year \dateseparator \twodigit\month \dateseparator \twodigit\day}
+
+% Change the hard brackets "[ ]" of the cite style to soft "( )" (Harvard/
+% Chalmers standard style).
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+% See to that some commands generate swedish text swedish
+\renewcommand{\contentsname}{Innehållsförteckning}
+\renewcommand{\appendixname}{Bilaga}
+\renewcommand{\appendixpagename}{Bilagor}
+\renewcommand{\bibname}{Källhänvisningar}
+
+% Make the date on the frontpage normal font size
+\date{\normalsize{\todayiso}}
+
+% Set and reset the header and footer.
+\pagestyle{fancy}
+
+\renewcommand{\headrulewidth}{0.1pt}
+
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[C]{\thepage}
