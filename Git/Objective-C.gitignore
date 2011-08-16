@@ -1,12 +1,8 @@
-.svn
-
 *.swp
 *.o
 *.lo
 .libs
 *.la
-
-.DS_Store
 
 build
 
