@@ -133,7 +133,7 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
  * See http://developer.apple.com/library/mac/#qa/qa2006/qa1490.html for more info.
  * Also see https://github.com/jverkoey/nimbus for the source of this code snippet.
  */
-#define CD_FIX_CATEGORY_BUG_QA1490_(name) @interface CD_FIX_CATEGORY_BUG_QA1490_##name @end \
+#define CD_FIX_CATEGORY_BUG_QA1490(name) @interface CD_FIX_CATEGORY_BUG_QA1490_##name @end \
 @implementation CD_FIX_CATEGORY_BUG_QA1490_##name @end
 
 
