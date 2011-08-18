@@ -16,7 +16,7 @@
 
 /**
  * DirectoryLocations is a set of global methods for finding the fixed location
- * directoriess.
+ * directories.
  *
  * @warning Note: The implementation requires the CDCommon header file for its
  *          logging macros as well as the CD_FIX_CATEGORY_BUG_QA1490 macro.

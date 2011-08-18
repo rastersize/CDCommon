@@ -13,17 +13,17 @@
 //
 
 #import "NSFileManager+CDDirectoryLocations.h"
-#import "NSString+CDUUID.h"
 #import "CDCommon.h"
+#import "NSString+CDUUID.h"
 
 enum {
 	kDirectoryLocationErrorNoPathFound,
 	kDirectoryLocationErrorFileExistsAtLocation
 };
-	
+
 NSString * const kDirectoryLocationDomain = @"DirectoryLocationDomain";
 
-CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
+CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 @implementation NSFileManager (CDDirectoryLocations)
 
 + (NSString *)dl_executableName
@@ -47,28 +47,28 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 	// Search for the path
 	//
 	NSArray* paths = NSSearchPathForDirectoriesInDomains(
-		searchPathDirectory,
-		domainMask,
-		YES);
+														 searchPathDirectory,
+														 domainMask,
+														 YES);
 	if ([paths count] == 0) {
 		if (errorOut) {
 			NSDictionary *userInfo =
-				[NSDictionary dictionaryWithObjectsAndKeys:
-					NSLocalizedStringFromTable(
-						@"DIR_LOCATION_NO_PATH_FOR_DIR_IN_DOMAIN",
-						@"Errors",
-						@"No path found for directory in domain."),
-					NSLocalizedDescriptionKey,
-					[NSNumber numberWithInteger:searchPathDirectory],
-					@"NSSearchPathDirectory",
-					[NSNumber numberWithInteger:domainMask],
-					@"NSSearchPathDomainMask",
-				nil];
+			[NSDictionary dictionaryWithObjectsAndKeys:
+			 NSLocalizedStringFromTable(
+										@"DIR_LOCATION_NO_PATH_FOR_DIR_IN_DOMAIN",
+										@"Errors",
+										@"No path found for directory in domain."),
+			 NSLocalizedDescriptionKey,
+			 [NSNumber numberWithInteger:searchPathDirectory],
+			 @"NSSearchPathDirectory",
+			 [NSNumber numberWithInteger:domainMask],
+			 @"NSSearchPathDomainMask",
+			 nil];
 			*errorOut =
-				[NSError 
-					errorWithDomain:kDirectoryLocationDomain
-					code:kDirectoryLocationErrorNoPathFound
-					userInfo:userInfo];
+			[NSError 
+			 errorWithDomain:kDirectoryLocationDomain
+			 code:kDirectoryLocationErrorNoPathFound
+			 userInfo:userInfo];
 		}
 		return nil;
 	}
@@ -77,13 +77,13 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 	// Normally only need the first path returned
 	//
 	NSString *resolvedPath = [paths objectAtIndex:0];
-
+	
 	//
 	// Append the extra path component
 	//
 	if (appendComponent) {
 		resolvedPath = [resolvedPath
-			stringByAppendingPathComponent:appendComponent];
+						stringByAppendingPathComponent:appendComponent];
 	}
 	
 	//
@@ -92,29 +92,29 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 	BOOL exists;
 	BOOL isDirectory;
 	exists = [self
-		fileExistsAtPath:resolvedPath
-		isDirectory:&isDirectory];
+			  fileExistsAtPath:resolvedPath
+			  isDirectory:&isDirectory];
 	if (!exists || !isDirectory) {
 		if (exists) {
 			if (errorOut) {
 				NSDictionary *userInfo =
-					[NSDictionary dictionaryWithObjectsAndKeys:
-						NSLocalizedStringFromTable(
-							@"DIR_LOCATION_FILE_EXISTS_AT_REQUESTED_DIR_LOCATION",
-							@"Errors",
-							@"File exists at requested directory location."
-						),
-						NSLocalizedDescriptionKey,
-						[NSNumber numberWithInteger:searchPathDirectory],
-						@"NSSearchPathDirectory",
-						[NSNumber numberWithInteger:domainMask],
-						@"NSSearchPathDomainMask",
-					nil];
+				[NSDictionary dictionaryWithObjectsAndKeys:
+				 NSLocalizedStringFromTable(
+											@"DIR_LOCATION_FILE_EXISTS_AT_REQUESTED_DIR_LOCATION",
+											@"Errors",
+											@"File exists at requested directory location."
+											),
+				 NSLocalizedDescriptionKey,
+				 [NSNumber numberWithInteger:searchPathDirectory],
+				 @"NSSearchPathDirectory",
+				 [NSNumber numberWithInteger:domainMask],
+				 @"NSSearchPathDomainMask",
+				 nil];
 				*errorOut =
-					[NSError 
-						errorWithDomain:kDirectoryLocationDomain
-						code:kDirectoryLocationErrorFileExistsAtLocation
-						userInfo:userInfo];
+				[NSError 
+				 errorWithDomain:kDirectoryLocationDomain
+				 code:kDirectoryLocationErrorFileExistsAtLocation
+				 userInfo:userInfo];
 			}
 			return nil;
 		}
@@ -124,10 +124,10 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 		//
 		NSError *error = nil;
 		BOOL success = [self
-			createDirectoryAtPath:resolvedPath
-			withIntermediateDirectories:YES
-			attributes:nil
-			error:&error];
+						createDirectoryAtPath:resolvedPath
+						withIntermediateDirectories:YES
+						attributes:nil
+						error:&error];
 		if (!success) {
 			if (errorOut) {
 				*errorOut = error;
@@ -151,12 +151,10 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 
 + (NSString *)dl_uniqueFilenameWithBase:(NSString *)base atURL:(NSURL *)url
 {
-	NSFileManager *fm = [[[NSFileManager alloc] init] autorelease];
+	NSFileManager *fm = [[NSFileManager alloc] init];
 	NSString *filename = nil;
 	
 	if ([fm fileExistsAtPath:[[url URLByAppendingPathComponent:base] path]]) {
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-		
 		NSString *baseLc = [base lowercaseString];
 		NSString *baseLcExt = [baseLc pathExtension];
 		baseLc = [baseLc stringByDeletingPathExtension];
@@ -181,15 +179,13 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 			}
 		}
 		
-		[pool drain];
-		
 		filename = [NSString stringWithFormat:@"%@ (%d)%@%@",
 					[base stringByDeletingPathExtension],
 					equals,
 					([[base pathExtension] length] > 0 ? @"." : @""),
 					[base pathExtension]];
 	} else {
-		filename = [[base copy] autorelease];
+		filename = [base copy];
 	}
 	
 	return filename;
@@ -206,7 +202,6 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 						inDomain:NSUserDomainMask
 			 appendPathComponent:nil
 						   error:&error];
-	[fm release];
 	
 	if (!result) {
 		ALog(@"Unable to find or create application support directory:\n%@", error);
@@ -230,7 +225,6 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 						inDomain:NSUserDomainMask
 			 appendPathComponent:nil
 						   error:&error];
-	[fm release];
 	
 	if (!result) {
 		ALog(@"Unable to find or create application documents directory:\n%@", error);
@@ -254,7 +248,6 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations);
 						inDomain:NSUserDomainMask
 			 appendPathComponent:nil
 						   error:&error];
-	[fm release];
 	
 	if (!result) {
 		ALog(@"Unable to find or create application cache directory:\n%@", error);
