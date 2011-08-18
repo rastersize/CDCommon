@@ -1,7 +1,7 @@
 //
 //  CDCommon.h
 //
-//  Created by Aron Cedercrantz on 31/03/10.
+//  Created by Aron Cedercrantz on 01/01/09.
 //  Copyright 2009-2011 Aron Cedercrantz. All rights reserved.
 //
 
@@ -24,20 +24,20 @@
 #pragma mark - Misc application macros
 // Application delegate
 #if TARGET_OS_IPHONE
-#define CD_APP_DELEGATE			[[UIApplication sharedApplication] delegate]
+#define CD_APP_DELEGATE				[[UIApplication sharedApplication] delegate]
 // OS X
 #else
-#define CD_APP_DELEGATE			[[NSApplication sharedApplication] delegate]
+#define CD_APP_DELEGATE				[[NSApplication sharedApplication] delegate]
 #endif // TARGET_OS_IPHONE
 
 
 #pragma mark - Open URL macros
 // Open an URL
 #if TARGET_OS_IPHONE
-#define CD_OPEN_URL(url)		[[UIApplication sharedApplication] openURL:url]
+#define CD_OPEN_URL(url)			[[UIApplication sharedApplication] openURL:url]
 // OS X
 #else
-#define CD_OPEN_URL(url)		[[NSWorkspace sharedWorkspace] openURL:url]
+#define CD_OPEN_URL(url)			[[NSWorkspace sharedWorkspace] openURL:url]
 #endif // TARGET_OS_IPHONE
 #define CD_OPEN_URL_STR(urlStr)		CD_OPEN_URL([NSURL URLWithString:urlStr])
 
@@ -121,6 +121,20 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 #define CDExceptionErrorFormat		CDExceptionBaseFormat
 #define CDExceptionWarningFormat	@"+++ %s: %@"
 #define CDExceptionNoticeFormat		@"=== %s: %@"
+
+
+#pragma mark - Fix for files in static libraries containing only categories
+/**
+ * @brief Force a category to be loaded when an app starts up.
+ *
+ * Add this macro before each category implementation, so we don't have to use
+ * -all_load or -force_load to load object files from static libraries that only contain
+ * categories and no classes.
+ * See http://developer.apple.com/library/mac/#qa/qa2006/qa1490.html for more info.
+ * Also see https://github.com/jverkoey/nimbus for the source of this code snippet.
+ */
+#define CD_FIX_CATEGORY_BUG_QA1490_(name) @interface CD_FIX_CATEGORY_BUG_QA1490_##name @end \
+@implementation CD_FIX_CATEGORY_BUG_QA1490_##name @end
 
 
 #pragma mark - Object is empty category
