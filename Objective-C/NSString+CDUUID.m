@@ -15,10 +15,10 @@ CD_FIX_CATEGORY_BUG_QA1490(NSString_CDUUID)
 + (NSString *)stringWithUUID
 {
 	CFUUIDRef uuidRef = CFUUIDCreate(nil);
-	NSString *uuidString = (NSString *)CFUUIDCreateString(nil, uuidRef);
+	NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidRef);
 	CFRelease(uuidRef);
 	
-	return [uuidString autorelease];
+	return uuidString;
 }
 
 @end
