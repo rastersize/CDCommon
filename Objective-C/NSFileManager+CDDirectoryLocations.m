@@ -14,7 +14,7 @@
 
 #import "NSFileManager+CDDirectoryLocations.h"
 #import "CDCommon.h"
-#import "NSString+CDUUID.h"
+
 
 enum {
 	kDirectoryLocationErrorNoPathFound,
@@ -26,14 +26,74 @@ NSString * const kDirectoryLocationDomain = @"DirectoryLocationDomain";
 CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 @implementation NSFileManager (CDDirectoryLocations)
 
-+ (NSString *)dl_executableName
-{
-	static NSString *executableName = NULL;
-	if (!executableName) {
-		executableName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleExecutable"];
-	}
+#pragma mark - Getting the Path and URL to Application Directories
++ (NSString *)dl_applicationSupportDirectoryPath:(NSString *)applicationName
+{	
+	NSError *error;
+	NSFileManager *fm = [[self alloc] init];
+	NSString *result =
+	[fm dl_findOrCreateDirectory:NSApplicationSupportDirectory
+						inDomain:NSUserDomainMask
+			 appendPathComponent:nil
+						   error:&error];
 	
-	return executableName;
+	if (!result) {
+		ALog(@"Unable to find or create application support directory:\n%@", error);
+	}
+	return result;
+}
+
++ (NSURL *)dl_applicationSupportDirectoryURL:(NSString *)applicationName
+{
+	NSString *aPath = [self dl_applicationSupportDirectoryPath:applicationName];
+	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
+	return anUrl;
+}
+
++ (NSString *)dl_applicationDocumentsDirectoryPath
+{	
+	NSError *error;
+	NSFileManager *fm = [[self alloc] init];
+	NSString *result =
+	[fm dl_findOrCreateDirectory:NSDocumentDirectory
+						inDomain:NSUserDomainMask
+			 appendPathComponent:nil
+						   error:&error];
+	
+	if (!result) {
+		ALog(@"Unable to find or create application documents directory:\n%@", error);
+	}
+	return result;
+}
+
++ (NSURL *)dl_applicationDocumentsDirectoryURL
+{
+	NSString *aPath = [self dl_applicationDocumentsDirectoryPath];
+	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
+	return anUrl;
+}
+
++ (NSString *)dl_applicationCacheDirectoryPath:(NSString *)applicationBundleId
+{	
+	NSError *error;
+	NSFileManager *fm = [[self alloc] init];
+	NSString *result =
+	[fm dl_findOrCreateDirectory:NSCachesDirectory
+						inDomain:NSUserDomainMask
+			 appendPathComponent:nil
+						   error:&error];
+	
+	if (!result) {
+		ALog(@"Unable to find or create application cache directory:\n%@", error);
+	}
+	return result;
+}
+
++ (NSURL *)dl_applicationCacheDirectoryURL:(NSString *)applicationBundleId
+{
+	NSString *aPath = [self dl_applicationCacheDirectoryPath];
+	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
+	return anUrl;
 }
 
 
@@ -141,126 +201,5 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	}
 	return resolvedPath;
 }
-
-#pragma mark - Creating unique filenames
-+ (NSString *)dl_uniqueFilename
-{
-    // Simply use an UUID, they are 'guaranteed' to be unique.
-	return [NSString stringWithUUID];
-}
-
-+ (NSString *)dl_uniqueFilenameWithBase:(NSString *)base atURL:(NSURL *)url
-{
-	NSFileManager *fm = [[NSFileManager alloc] init];
-	NSString *filename = nil;
-	
-	if ([fm fileExistsAtPath:[[url URLByAppendingPathComponent:base] path]]) {
-		NSString *baseLc = [base lowercaseString];
-		NSString *baseLcExt = [baseLc pathExtension];
-		baseLc = [baseLc stringByDeletingPathExtension];
-		
-		NSError *contentsError;
-		NSArray *currentContent = [fm contentsOfDirectoryAtPath:[url path] error:&contentsError];
-		NSMutableArray *currentContentsLc = [NSMutableArray arrayWithCapacity:[currentContent count]];
-		for (NSString *item in currentContent) {
-			[currentContentsLc addObject:[item lowercaseString]];
-		}
-		
-		NSUInteger equals = 2;
-		for (; equals < 1048576; ++equals) {
-			NSString *equalsString = [NSString stringWithFormat:@"%@ (%d)%@%@",
-									  baseLc,
-									  equals,
-									  ([baseLcExt length] > 0 ? @"." : @""),
-									  baseLcExt]; 
-			
-			if (![currentContentsLc containsObject:equalsString]) {
-				break;
-			}
-		}
-		
-		filename = [NSString stringWithFormat:@"%@ (%d)%@%@",
-					[base stringByDeletingPathExtension],
-					equals,
-					([[base pathExtension] length] > 0 ? @"." : @""),
-					[base pathExtension]];
-	} else {
-		filename = [base copy];
-	}
-	
-	return filename;
-}
-
-
-#pragma mark - Getting the Path and URL to Application Directories
-+ (NSString *)dl_applicationSupportDirectoryPath
-{	
-	NSError *error;
-	NSFileManager *fm = [[self alloc] init];
-	NSString *result =
-	[fm dl_findOrCreateDirectory:NSApplicationSupportDirectory
-						inDomain:NSUserDomainMask
-			 appendPathComponent:nil
-						   error:&error];
-	
-	if (!result) {
-		ALog(@"Unable to find or create application support directory:\n%@", error);
-	}
-	return result;
-}
-
-+ (NSURL *)dl_applicationSupportDirectoryURL
-{
-	NSString *aPath = [self dl_applicationSupportDirectoryPath];
-	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
-	return anUrl;
-}
-
-+ (NSString *)dl_applicationDocumentsDirectoryPath
-{	
-	NSError *error;
-	NSFileManager *fm = [[self alloc] init];
-	NSString *result =
-	[fm dl_findOrCreateDirectory:NSDocumentDirectory
-						inDomain:NSUserDomainMask
-			 appendPathComponent:nil
-						   error:&error];
-	
-	if (!result) {
-		ALog(@"Unable to find or create application documents directory:\n%@", error);
-	}
-	return result;
-}
-
-+ (NSURL *)dl_applicationDocumentsDirectoryURL
-{
-	NSString *aPath = [self dl_applicationDocumentsDirectoryPath];
-	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
-	return anUrl;
-}
-
-+ (NSString *)dl_applicationCacheDirectoryPath
-{	
-	NSError *error;
-	NSFileManager *fm = [[self alloc] init];
-	NSString *result =
-	[fm dl_findOrCreateDirectory:NSCachesDirectory
-						inDomain:NSUserDomainMask
-			 appendPathComponent:nil
-						   error:&error];
-	
-	if (!result) {
-		ALog(@"Unable to find or create application cache directory:\n%@", error);
-	}
-	return result;
-}
-
-+ (NSURL *)dl_applicationCacheDirectoryURL
-{
-	NSString *aPath = [self dl_applicationCacheDirectoryPath];
-	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
-	return anUrl;
-}
-
 
 @end

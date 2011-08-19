@@ -63,12 +63,14 @@
  * assertion will be triggered and in release mode the error will only be
  * logged to stdout.
  *
+ * @param applicationName Optional name of the application, if given it will be
+ *        appended to the path to the application support directory path.
  * @return A string containing the absolute path to the application support
  *         directory.
  * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryURL
+ * @see dl_applicationSupportDirectoryURL:
  */
-+ (NSString *)dl_applicationSupportDirectoryPath;
++ (NSString *)dl_applicationSupportDirectoryPath:(NSString *)applicationName;
 
 /**
  * Finds the application support directory (creates it if it doesn't exist) and
@@ -78,19 +80,54 @@
  * assertion will be triggered and in release mode the error will only be
  * logged to stdout.
  *
+ * @param applicationName Optional name of the application, if given it will be
+ *        appended to the path to the application support directory URL.
  * @return An url containing the absolute path to the application support
  *         directory.
  * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryPath
+ * @see dl_applicationSupportDirectoryPath:
  */
-+ (NSURL *)dl_applicationSupportDirectoryURL;
++ (NSURL *)dl_applicationSupportDirectoryURL:(NSString *)applicationName;
 
 
 + (NSString *)dl_applicationDocumentsDirectoryPath;
 + (NSURL *)dl_applicationDocumentsDirectoryURL;
 
-+ (NSString *)dl_applicationCacheDirectoryPath;
-+ (NSURL *)dl_applicationCacheDirectoryURL;
+
+/**
+ * Finds the application cache directory (creates it if it doesn't exist) and
+ * returns the path to it.
+ *
+ * Will log errors using debug assertion log, meaning that in debug mode an
+ * assertion will be triggered and in release mode the error will only be
+ * logged to stdout.
+ *
+ * @param applicationBundleId Optional bundle ID of the application, if given it
+ *        will be appended to the path to the application cache directory path.
+ * @return A string containing the absolute path to the application cache
+ *         directory.
+ * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see dl_applicationSupportDirectoryPath:
+ */
++ (NSString *)dl_applicationCacheDirectoryPath:(NSString *)applicationBundleId;
+
+/**
+ * Finds the application cache directory (creates it if it doesn't exist) and
+ * returns the URL to it.
+ *
+ * Will log errors using debug assertion log, meaning that in debug mode an
+ * assertion will be triggered and in release mode the error will only be
+ * logged to stdout.
+ *
+ * @param applicationBundleId Optional bundle ID of the application, if given it
+ *        will be appended to the path to the application cache directory URL.
+ *        appended to the path to the application support directory.
+ * @return An url containing the absolute path to the application cache
+ *         directory.
+ * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see dl_applicationSupportDirectoryPath:
+ */
++ (NSURL *)dl_applicationCacheDirectoryURL:(NSString *)applicationBundleId;
 
 
 @end
