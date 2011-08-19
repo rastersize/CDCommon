@@ -91,7 +91,7 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 
 + (NSURL *)dl_applicationCacheDirectoryURL:(NSString *)applicationBundleId
 {
-	NSString *aPath = [self dl_applicationCacheDirectoryPath];
+	NSString *aPath = [self dl_applicationCacheDirectoryPath:applicationBundleId];
 	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
 	return anUrl;
 }
