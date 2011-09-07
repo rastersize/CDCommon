@@ -34,7 +34,7 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	NSString *result =
 	[fm dl_findOrCreateDirectory:NSApplicationSupportDirectory
 						inDomain:NSUserDomainMask
-			 appendPathComponent:nil
+			 appendPathComponent:applicationName
 						   error:&error];
 	
 	if (!result) {
@@ -80,7 +80,7 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	NSString *result =
 	[fm dl_findOrCreateDirectory:NSCachesDirectory
 						inDomain:NSUserDomainMask
-			 appendPathComponent:nil
+			 appendPathComponent:applicationBundleId
 						   error:&error];
 	
 	if (!result) {
