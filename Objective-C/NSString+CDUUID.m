@@ -12,7 +12,7 @@
 CD_FIX_CATEGORY_BUG_QA1490(NSString_CDUUID)
 @implementation NSString (CDUUID)
 
-+ (NSString *)stringWithUUID
++ (NSString *)cd_stringWithUUID
 {
 	CFUUIDRef uuidRef = CFUUIDCreate(nil);
 	NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(nil, uuidRef);

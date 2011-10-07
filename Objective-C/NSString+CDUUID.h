@@ -19,6 +19,6 @@
  *
  * @return A string containing a newly generated UUID string.
  */
-+ (NSString *)stringWithUUID;
++ (NSString *)cd_stringWithUUID;
 
 @end
