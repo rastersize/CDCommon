@@ -27,12 +27,12 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 @implementation NSFileManager (CDDirectoryLocations)
 
 #pragma mark - Getting the Path and URL to Application Directories
-+ (NSString *)dl_applicationSupportDirectoryPath:(NSString *)applicationName
++ (NSString *)cd_applicationSupportDirectoryPath:(NSString *)applicationName
 {	
 	NSError *error;
 	NSFileManager *fm = [[self alloc] init];
 	NSString *result =
-	[fm dl_findOrCreateDirectory:NSApplicationSupportDirectory
+	[fm cd_findOrCreateDirectory:NSApplicationSupportDirectory
 						inDomain:NSUserDomainMask
 			 appendPathComponent:applicationName
 						   error:&error];
@@ -43,19 +43,19 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	return result;
 }
 
-+ (NSURL *)dl_applicationSupportDirectoryURL:(NSString *)applicationName
++ (NSURL *)cd_applicationSupportDirectoryURL:(NSString *)applicationName
 {
-	NSString *aPath = [self dl_applicationSupportDirectoryPath:applicationName];
+	NSString *aPath = [self cd_applicationSupportDirectoryPath:applicationName];
 	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
 	return anUrl;
 }
 
-+ (NSString *)dl_applicationDocumentsDirectoryPath
++ (NSString *)cd_applicationDocumentsDirectoryPath
 {	
 	NSError *error;
 	NSFileManager *fm = [[self alloc] init];
 	NSString *result =
-	[fm dl_findOrCreateDirectory:NSDocumentDirectory
+	[fm cd_findOrCreateDirectory:NSDocumentDirectory
 						inDomain:NSUserDomainMask
 			 appendPathComponent:nil
 						   error:&error];
@@ -66,19 +66,19 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	return result;
 }
 
-+ (NSURL *)dl_applicationDocumentsDirectoryURL
++ (NSURL *)cd_applicationDocumentsDirectoryURL
 {
-	NSString *aPath = [self dl_applicationDocumentsDirectoryPath];
+	NSString *aPath = [self cd_applicationDocumentsDirectoryPath];
 	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
 	return anUrl;
 }
 
-+ (NSString *)dl_applicationCacheDirectoryPath:(NSString *)applicationBundleId
++ (NSString *)cd_applicationCacheDirectoryPath:(NSString *)applicationBundleId
 {	
 	NSError *error;
 	NSFileManager *fm = [[self alloc] init];
 	NSString *result =
-	[fm dl_findOrCreateDirectory:NSCachesDirectory
+	[fm cd_findOrCreateDirectory:NSCachesDirectory
 						inDomain:NSUserDomainMask
 			 appendPathComponent:applicationBundleId
 						   error:&error];
@@ -89,16 +89,16 @@ CD_FIX_CATEGORY_BUG_QA1490(NSFileManager_CDDirectoryLocations)
 	return result;
 }
 
-+ (NSURL *)dl_applicationCacheDirectoryURL:(NSString *)applicationBundleId
++ (NSURL *)cd_applicationCacheDirectoryURL:(NSString *)applicationBundleId
 {
-	NSString *aPath = [self dl_applicationCacheDirectoryPath:applicationBundleId];
+	NSString *aPath = [self cd_applicationCacheDirectoryPath:applicationBundleId];
 	NSURL *anUrl = [NSURL fileURLWithPath:aPath isDirectory:YES];
 	return anUrl;
 }
 
 
 #pragma mark - Getting the Path or URL to Directories
-- (NSString *)dl_findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
+- (NSString *)cd_findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
 							  inDomain:(NSSearchPathDomainMask)domainMask
 				   appendPathComponent:(NSString *)appendComponent
 								 error:(NSError **)errorOut

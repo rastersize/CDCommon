@@ -48,7 +48,7 @@
  * @return A string containing the path of the directory if it exists, otherwise `nil`.
  * @author Matt Gallagher
  */
-- (NSString *)dl_findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
+- (NSString *)cd_findOrCreateDirectory:(NSSearchPathDirectory)searchPathDirectory
 							  inDomain:(NSSearchPathDomainMask)domainMask
 				   appendPathComponent:(NSString *)appendComponent
 								 error:(NSError **)errorOut;
@@ -67,10 +67,10 @@
  *        appended to the path to the application support directory path.
  * @return A string containing the absolute path to the application support
  *         directory.
- * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryURL:
+ * @see cd_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see cd_applicationSupportDirectoryURL:
  */
-+ (NSString *)dl_applicationSupportDirectoryPath:(NSString *)applicationName;
++ (NSString *)cd_applicationSupportDirectoryPath:(NSString *)applicationName;
 
 /**
  * Finds the application support directory (creates it if it doesn't exist) and
@@ -84,14 +84,14 @@
  *        appended to the path to the application support directory URL.
  * @return An url containing the absolute path to the application support
  *         directory.
- * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryPath:
+ * @see cd_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see cd_applicationSupportDirectoryPath:
  */
-+ (NSURL *)dl_applicationSupportDirectoryURL:(NSString *)applicationName;
++ (NSURL *)cd_applicationSupportDirectoryURL:(NSString *)applicationName;
 
 
-+ (NSString *)dl_applicationDocumentsDirectoryPath;
-+ (NSURL *)dl_applicationDocumentsDirectoryURL;
++ (NSString *)cd_applicationDocumentsDirectoryPath;
++ (NSURL *)cd_applicationDocumentsDirectoryURL;
 
 
 /**
@@ -106,10 +106,10 @@
  *        will be appended to the path to the application cache directory path.
  * @return A string containing the absolute path to the application cache
  *         directory.
- * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryPath:
+ * @see cd_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see cd_applicationSupportDirectoryPath:
  */
-+ (NSString *)dl_applicationCacheDirectoryPath:(NSString *)applicationBundleId;
++ (NSString *)cd_applicationCacheDirectoryPath:(NSString *)applicationBundleId;
 
 /**
  * Finds the application cache directory (creates it if it doesn't exist) and
@@ -124,10 +124,10 @@
  *        appended to the path to the application support directory.
  * @return An url containing the absolute path to the application cache
  *         directory.
- * @see dl_findOrCreateDirectory:inDomain:appendPathComponent:error:
- * @see dl_applicationSupportDirectoryPath:
+ * @see cd_findOrCreateDirectory:inDomain:appendPathComponent:error:
+ * @see cd_applicationSupportDirectoryPath:
  */
-+ (NSURL *)dl_applicationCacheDirectoryURL:(NSString *)applicationBundleId;
++ (NSURL *)cd_applicationCacheDirectoryURL:(NSString *)applicationBundleId;
 
 
 @end
