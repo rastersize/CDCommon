@@ -24,20 +24,20 @@
 #pragma mark - Misc application macros
 // Application delegate
 #if TARGET_OS_IPHONE
-#define CD_APP_DELEGATE				[[UIApplication sharedApplication] delegate]
+#	define CD_APP_DELEGATE				[[UIApplication sharedApplication] delegate]
 // OS X
 #else
-#define CD_APP_DELEGATE				[[NSApplication sharedApplication] delegate]
+#	define CD_APP_DELEGATE				[[NSApplication sharedApplication] delegate]
 #endif // TARGET_OS_IPHONE
 
 
 #pragma mark - Open URL macros
 // Open an URL
 #if TARGET_OS_IPHONE
-#define CD_OPEN_URL(url)			[[UIApplication sharedApplication] openURL:url]
+#	define CD_OPEN_URL(url)			[[UIApplication sharedApplication] openURL:url]
 // OS X
 #else
-#define CD_OPEN_URL(url)			[[NSWorkspace sharedWorkspace] openURL:url]
+#	define CD_OPEN_URL(url)			[[NSWorkspace sharedWorkspace] openURL:url]
 #endif // TARGET_OS_IPHONE
 #define CD_OPEN_URL_STR(urlStr)		CD_OPEN_URL([NSURL URLWithString:urlStr])
 
@@ -48,11 +48,6 @@
 #define CD_PREF_KEY_BOOL(x)			[(PREF_KEY_VALUE(x)) boolValue]
 #define CD_PREF_SET_KEY_VALUE(x, y)	[[[NSUserDefaultsController sharedUserDefaultsController] values] setValue:(y) forKey:(x)]
 #define CD_PREF_OBSERVE_VALUE(x, y)	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:y forKeyPath:x options:NSKeyValueObservingOptionOld context:nil];
-
-
-#pragma mark - Key observing
-// key, observer, object
-#define CD_OBSERVE_VALUE(x, y, z)	[(z) addObserver:y forKeyPath:x options:NSKeyValueObservingOptionOld context:nil];
 
 
 #pragma mark - Accessor macros
@@ -77,10 +72,15 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // Release Objective-C object macro (will release and then set the variable to
 // nil if not in debug mode, otherwise it will just release variable).
 // From http://iphonedevelopment.blogspot.com/2010/09/dealloc.html
-#if DEBUG
-#define CDRelease(x)			[x release]
+// Modified by Aron Cedercrantz to be ARC compatible.
+#if __has_feature(objc_arc)
+#	define CDRelease(x)			do {} while (0)
 #else
-#define CDRelease(x)			[x release], x = nil
+#	if DEBUG
+#		define CDRelease(x)		[x release]
+#	else
+#		define CDRelease(x)		[x release], x = nil
+#	endif
 #endif
 
 
@@ -90,16 +90,16 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // assertion if we are in debug mode and a in non-debug mode it will output the
 // assertion via NSLog(...)
 #ifdef DEBUG
-#define DLog(...) NSLog(@"=== %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
-#define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+#	define DLog(...) NSLog(@"=== %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#	define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
 #else // !DEBUG
-#define DLog(...) do { } while (0)
+#	define DLog(...) do { } while (0)
 #ifndef NS_BLOCK_ASSERTIONS
-#define NS_BLOCK_ASSERTIONS
+#	define NS_BLOCK_ASSERTIONS
 #endif
-#define ALog(...) NSLog(@"*** %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#	define ALog(...) NSLog(@"*** %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
 #endif // DEBUG
-	   // Assertion method which use ALog(...) to print its output
+// Assertion method which use ALog(...) to print its output
 #define ZAssert(condition, ...) do { if (!(condition)) { ALog(__VA_ARGS__); }} while(0)
 
 
@@ -136,16 +136,6 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 #define CD_FIX_CATEGORY_BUG_QA1490(name) @interface CD_FIX_CATEGORY_BUG_QA1490_##name @end \
 @implementation CD_FIX_CATEGORY_BUG_QA1490_##name @end
 
-
-#pragma mark - Object is empty category
-// Definition of isEmpty function. If the pointer given points to nil, an object
-// whose lenght is zero or an object with zero children the pointer and/or the
-// object it points to is considered empty.
-@interface NSObject (CDIsEmpty)
-
-- (BOOL)cdIsEmpty;
-
-@end
 
 #endif // __OBJC__
 #endif // CD_COMMON_H
