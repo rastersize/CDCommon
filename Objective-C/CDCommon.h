@@ -74,7 +74,7 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // From http://iphonedevelopment.blogspot.com/2010/09/dealloc.html
 // Modified by Aron Cedercrantz to be ARC compatible.
 #if __has_feature(objc_arc)
-#	define CDRelease(x)			do {} while (0)
+#	define CDRelease(x)			x = nil
 #else
 #	if DEBUG
 #		define CDRelease(x)		[x release]
@@ -91,7 +91,7 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // assertion via NSLog(...)
 #ifdef DEBUG
 #	define DLog(...) NSLog(@"=== %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
-#	define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__ encoding:NSUTF8StringEncoding] file:[NSString stringWithCString:__FILE__ encoding:NSUTF8StringEncoding] lineNumber:__LINE__ description:__VA_ARGS__]
+#	define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] file:[NSString stringWithUTF8String:__FILE__] lineNumber:__LINE__ description:__VA_ARGS__]
 #else // !DEBUG
 #	define DLog(...) do { } while (0)
 #ifndef NS_BLOCK_ASSERTIONS
@@ -107,11 +107,11 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // 1:    %@ == The object name
 // 2:    %p == The object pointer
 // 3...: %@ == Extra information
-#define CDDescriptionMsg			@"<%@: %p { %@ }>"
-#define CDDescriptionMsg1			CDDescriptionMsg
-#define CDDescriptionMsg2			@"<%@: %p { %@, %@ }>"
-#define CDDescriptionMsg3			@"<%@: %p { %@, %@, %@ }>"
-#define CDDescriptionMsg4			@"<%@: %p { %@, %@, %@, %@}>"
+#define CDDescriptionFormat			@"<%@: %p { %@ }>"
+#define CDDescriptionFormat1		CDDescriptionMsg
+#define CDDescriptionFormat2		@"<%@: %p { %@, %@ }>"
+#define CDDescriptionFormat3		@"<%@: %p { %@, %@, %@ }>"
+#define CDDescriptionFormat4		@"<%@: %p { %@, %@, %@, %@}>"
 
 
 #pragma mark - Exception formats

@@ -6,17 +6,3 @@
 //
 
 #import "CDCommon.h"
-
-
-@implementation NSObject (CDIsEmpty)
-
-- (BOOL)cdIsEmpty
-{
-    return (([self respondsToSelector:@selector(length)] &&
-			 [self performSelector:@selector(length)] == 0) ||
-			
-			([self respondsToSelector:@selector(count)] &&
-			 [self performSelector:@selector(count)] == 0));
-}
-
-@end
