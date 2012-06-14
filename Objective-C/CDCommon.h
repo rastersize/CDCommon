@@ -91,9 +91,11 @@ objc_copyStruct(&dest, &source, sizeof(__typeof__(source)), YES, NO)
 // assertion via NSLog(...)
 #ifdef DEBUG
 #	define DLog(...) NSLog(@"=== %s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__])
+#	define DCLog(condition, ...) if ((condition)) { DLog(__VA_ARGS__); }
 #	define ALog(...) [[NSAssertionHandler currentHandler] handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] file:[NSString stringWithUTF8String:__FILE__] lineNumber:__LINE__ description:__VA_ARGS__]
 #else // !DEBUG
 #	define DLog(...) do { } while (0)
+#	define DCLog(condition, ...) do { } while (0)
 #ifndef NS_BLOCK_ASSERTIONS
 #	define NS_BLOCK_ASSERTIONS
 #endif
