@@ -42,6 +42,12 @@
 #define CD_OPEN_URL_STR(urlStr)		CD_OPEN_URL([NSURL URLWithString:urlStr])
 
 
+#pragma mark - Boxing Values in Objective-C Objects
+// Box a value _val_ using NSValue.
+// By Phil Jordan (@pmjordan) – https://twitter.com/pmjordan/status/221902596506529792
+#define CD_BOXED(val)				({ typeof(val) _tmp_val = (val); [NSValue valueWithBytes:&(_tmp_val) objCType:@encode(typeof(val))]; })
+
+
 #pragma mark - Preferences
 // Retrieving preference values
 #define CD_PREF_KEY_VALUE(x)		[[[NSUserDefaultsController sharedUserDefaultsController] values] valueForKey:(x)]
